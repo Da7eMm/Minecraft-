@@ -1,91 +1,61 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لعبة ماينكرافت مصغرة</title>
+    <title>عيد ميلاد سعيد!</title>
     <style>
         body {
             margin: 0;
-            background: #87CEEB;
-            font-family: Tahoma, sans-serif;
+            padding: 0;
+            background: linear-gradient(135deg, #1e1e2f, #2d1b4e);
+            font-family: 'Tahoma', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             overflow: hidden;
+            color: white;
             text-align: center;
         }
-        h1 {
-            color: white;
-            margin: 10px;
-            text-shadow: 2px 2px #333;
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            animation: bounce 2s infinite alternate;
         }
-        canvas {
-            background: #87CEEB;
-            display: block;
-            margin: 20px auto;
-            border: 4px solid #333;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        h1 {
+            color: #ffcc00;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
         }
         p {
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px #000;
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        .cake {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
         }
     </style>
 </head>
 <body>
 
-    <h1>لعبة مكعبات مبسطة (شبيهة بماينكرافت)</h1>
-    <p>انقر بال الفأرة (الكليك) على الشاشة لزرع مكعب عشب جديد!</p>
-    
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
-
-    <script>
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-
-        // مصفوفة لتخزين أماكن المكعبات
-        let blocks = [];
-
-        // إضافة أرضية ثابتة في أسفل الشاشة
-        for (let i = 0; i < canvas.width; i += 40) {
-            blocks.index = { x: i, y: canvas.height - 40, type: 'grass' };
-        }
-
-        // عند النقر بالماوس، أضف مكعب جديد
-        canvas.addEventListener("click", function(event) {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = Math.floor((event.clientX - rect.left) / 40) * 40;
-            const mouseY = Math.floor((event.clientY - rect.top) / 40) * 40;
-            
-            // التأكد من عدم تكرار المكعب في نفس المكان
-            let exists = blocks.some(b => b.x === mouseX && b.y === mouseY);
-            if (!exists) {
-                blocks.push({ x: mouseX, y: mouseY, type: 'dirt' });
-            }
-        });
-
-        function draw() {
-            // تنظيف الشاشة ورسم السماء
-            ctx.fillStyle = "#87CEEB";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // رسم المكعبات
-            blocks.forEach(block => {
-                if (block.type === 'grass') {
-                    ctx.fillStyle = "#228B22"; // أخضر للعشب
-                } else {
-                    ctx.fillStyle = "#8B4513"; // بني للأتربة
-                }
-                ctx.fillRect(block.x, block.y, 40, 40);
-                
-                // إطار المكعب ليوضح الشكل شبيه المربع
-                ctx.strokeStyle = "#000";
-                ctx.strokeRect(block.x, block.y, 40, 40);
-            });
-
-            requestAnimationFrame(draw);
-        }
-
-        draw();
-    </script>
+    <div class="card">
+        <div class="cake">🎂🎉</div>
+        <h1>كل عام وأنت بألف خير!</h1>
+        <p>إلى أقرب الناس إلى قلبي، أتمنى لك سنة مليئة بالسعادة، النجاح، وتحقيق كل ما تتمناه. عسى أن تكون أيامك كلها أعياد وفرح!</p>
+        <p style="margin-top: 20px; color: #ff7675; font-weight: bold;">عيد ميلاد سعيد 🎈</p>
+    </div>
 
 </body>
 </html>
