@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>لعبة ماينكرافت مصغرة</title>
+    <style>
+        body {
+            margin: 0;
+            background: #87CEEB;
+            font-family: Tahoma, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+        h1 {
+            color: white;
+            margin: 10px;
+            text-shadow: 2px 2px #333;
+        }
+        canvas {
+            background: #87CEEB;
+            display: block;
+            margin: 20px auto;
+            border: 4px solid #333;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        p {
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>لعبة مكعبات مبسطة (شبيهة بماينكرافت)</h1>
+    <p>انقر بال الفأرة (الكليك) على الشاشة لزرع مكعب عشب جديد!</p>
+    
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // مصفوفة لتخزين أماكن المكعبات
+        let blocks = [];
+
+        // إضافة أرضية ثابتة في أسفل الشاشة
+        for (let i = 0; i < canvas.width; i += 40) {
+            blocks.index = { x: i, y: canvas.height - 40, type: 'grass' };
+        }
+
+        // عند النقر بالماوس، أضف مكعب جديد
+        canvas.addEventListener("click", function(event) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = Math.floor((event.clientX - rect.left) / 40) * 40;
+            const mouseY = Math.floor((event.clientY - rect.top) / 40) * 40;
+            
+            // التأكد من عدم تكرار المكعب في نفس المكان
+            let exists = blocks.some(b => b.x === mouseX && b.y === mouseY);
+            if (!exists) {
+                blocks.push({ x: mouseX, y: mouseY, type: 'dirt' });
+            }
+        });
+
+        function draw() {
+            // تنظيف الشاشة ورسم السماء
+            ctx.fillStyle = "#87CEEB";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // رسم المكعبات
+            blocks.forEach(block => {
+                if (block.type === 'grass') {
+                    ctx.fillStyle = "#228B22"; // أخضر للعشب
+                } else {
+                    ctx.fillStyle = "#8B4513"; // بني للأتربة
+                }
+                ctx.fillRect(block.x, block.y, 40, 40);
+                
+                // إطار المكعب ليوضح الشكل شبيه المربع
+                ctx.strokeStyle = "#000";
+                ctx.strokeRect(block.x, block.y, 40, 40);
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
+
+</body>
+</html>
