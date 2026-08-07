@@ -4,69 +4,263 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>تحدي الألوان الاحترافي - Pro Color Master</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- مكتبة خطوط وأيقونات Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border-color: #334155;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
+            padding: 18px;
+            background-color: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .logo h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .stat-item .label { color: var(--text-muted); }
+        .stat-item .value { font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
+
+        .game-arena {
+            padding: 20px;
+            min-height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-card, .game-over-card {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .hero-card h2, .game-over-card h2 { font-size: 1.4rem; }
+        .hero-card p, .game-over-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
+        .primary-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .primary-btn:hover { background-color: var(--accent-hover); }
+
+        .timer-wrapper {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .timer-bar {
+            height: 100%;
+            width: 100%;
+            background-color: var(--success);
+            transition: width 0.05s linear;
+        }
+
+        .target-container {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .hint-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .target-box {
+            height: 100px;
+            border-radius: var(--radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        }
+
+        #target-hex-code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-card {
+            height: 85px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            transition: transform 0.1s;
+        }
+
+        .option-card:active { transform: scale(0.96); }
+
+        .final-score-box {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .final-score-box h3 { font-size: 1.8rem; color: var(--accent); margin-top: 5px; }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { color: var(--success); border-color: var(--success); }
+        .toast.danger { color: var(--danger); border-color: var(--danger); }
+    </style>
 </head>
 <body>
 
     <div class="app-wrapper">
-        <!-- شريط العنوان العلوي -->
         <header class="app-header">
             <div class="logo">
-                <span class="sparkle">✨</span>
-                <h1>مُخمّن الألوان الاحترافي</h1>
+                <h1>✨ مُخمّن الألوان الاحترافي</h1>
             </div>
             <div class="stats-bar">
-                <div class="stat-item">
-                    <span class="label">النقاط:</span>
-                    <span id="score-val" class="value">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="label">المستوى:</span>
-                    <span id="level-val" class="value">1</span>
-                </div>
-                <div class="stat-item">
-                    <span class="label">الأرواح:</span>
-                    <span id="lives-val" class="value">❤️❤️❤️</span>
-                </div>
+                <div class="stat-item"><span class="label">النقاط:</span><span id="score-val" class="value">0</span></div>
+                <div class="stat-item"><span class="label">المستوى:</span><span id="level-val" class="value">1</span></div>
+                <div class="stat-item"><span class="label">الأرواح:</span><span id="lives-val" class="value">❤️❤️❤️</span></div>
             </div>
         </header>
 
-        <!-- منطقة اللعبة الرئيسية -->
         <main class="game-arena">
-            <!-- شاشة الترحيب والبداية -->
+            <!-- شاشة البداية -->
             <div id="start-screen" class="screen active">
                 <div class="hero-card">
-                    <h2>اختبر دقة تمييزك البصري!</h2>
-                    <p>قم بمطابقة اللون المستهدف مع الخيارات المتاحة قبل نفاد الوقت. كلما تقدمت في المستويات، زادت دقة الألوان وصعوبة التحدي.</p>
+                    <h2>اختبر دقة بصرك!</h2>
+                    <p>طابق اللون المستهدف مع الخيارات المتاحة بدقة وسرعة قبل نفاد الوقت.</p>
                     <button id="start-game-btn" class="primary-btn">بدء التحدي الآن</button>
                 </div>
             </div>
 
-            <!-- شاشة اللعب الفعلية -->
+            <!-- شاشة اللعب -->
             <div id="play-screen" class="screen">
-                <div class="timer-wrapper">
-                    <div id="timer-bar" class="timer-bar"></div>
-                </div>
-
+                <div class="timer-wrapper"><div id="timer-bar" class="timer-bar"></div></div>
                 <div class="target-container">
                     <span class="hint-text">طابق هذا اللون:</span>
-                    <div id="target-box" class="target-box">
-                        <span id="target-hex-code">#000000</span>
-                    </div>
+                    <div id="target-box" class="target-box"><span id="target-hex-code">#000000</span></div>
                 </div>
-
-                <div id="options-grid" class="options-grid">
-                    <!-- سيتم توليد المربعات برمجياً عبر الجافاسكريبت -->
-                </div>
+                <div id="options-grid" class="options-grid"></div>
             </div>
 
-            <!-- شاشة نهاية اللعبة -->
+            <!-- شاشة النهاية -->
             <div id="game-over-screen" class="screen">
                 <div class="game-over-card">
                     <h2>انتهت اللعبة! 🎮</h2>
-                    <p>لقد قدمت أداءً رائعاً، ولكن نفدت محاولاتك.</p>
+                    <p>لقد قدمت أداءً مذهلاً.</p>
                     <div class="final-score-box">
                         <span>النتيجة النهائية:</span>
                         <h3 id="final-score-val">0</h3>
@@ -75,11 +269,178 @@
                 </div>
             </div>
         </main>
-
-        <!-- إشعارات التنبيه السريعة -->
         <div id="toast-notification" class="toast"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const screens = {
+                start: document.getElementById('start-screen'),
+                play: document.getElementById('play-screen'),
+                gameOver: document.getElementById('game-over-screen')
+            };
+
+            const buttons = {
+                start: document.getElementById('start-game-btn'),
+                restart: document.getElementById('restart-game-btn')
+            };
+
+            const displays = {
+                score: document.getElementById('score-val'),
+                level: document.getElementById('level-val'),
+                lives: document.getElementById('lives-val'),
+                finalScore: document.getElementById('final-score-val'),
+                targetBox: document.getElementById('target-box'),
+                targetHex: document.getElementById('target-hex-code'),
+                optionsGrid: document.getElementById('options-grid'),
+                timerBar: document.getElementById('timer-bar'),
+                toast: document.getElementById('toast-notification')
+            };
+
+            let state = {
+                score: 0,
+                level: 1,
+                lives: 3,
+                targetColor: '',
+                isGameActive: false,
+                timerInterval: null,
+                timeLeft: 100,
+                maxTime: 7000,
+                step: 40
+            };
+
+            function randomHex() {
+                return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0').toUpperCase();
+            }
+
+            function generateSimilar(base, variance) {
+                let num = parseInt(base.replace('#', ''), 16);
+                let r = Math.max(0, Math.min(255, (num >> 16) + randInt(-variance, variance)));
+                let g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + randInt(-variance, variance)));
+                let b = Math.max(0, Math.min(255, (num & 0x0000FF) + randInt(-variance, variance)));
+                return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+            }
+
+            function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+            function switchScreen(name) {
+                Object.keys(screens).forEach(k => screens[k].classList.toggle('active', k === name));
+            }
+
+            function showToast(msg, type = 'success') {
+                displays.toast.textContent = msg;
+                displays.toast.className = `toast show ${type}`;
+                setTimeout(() => displays.toast.classList.remove('show'), 1000);
+            }
+
+            function initGame() {
+                state.score = 0;
+                state.level = 1;
+                state.lives = 3;
+                updateStats();
+                switchScreen('play');
+                nextRound();
+            }
+
+            function updateStats() {
+                displays.score.textContent = state.score;
+                displays.level.textContent = state.level;
+                displays.lives.textContent = '❤️'.repeat(state.lives);
+            }
+
+            function nextRound() {
+                clearInterval(state.timerInterval);
+                state.isGameActive = true;
+
+                state.targetColor = randomHex();
+                displays.targetBox.style.backgroundColor = state.targetColor;
+                displays.targetHex.textContent = state.targetColor;
+
+                let variance = Math.max(12, 80 - (state.level * 5));
+                let correctIdx = randInt(0, 3);
+                let options = [];
+
+                for (let i = 0; i < 4; i++) {
+                    if (i === correctIdx) {
+                        options.push(state.targetColor);
+                    } else {
+                        let wrong;
+                        do { wrong = generateSimilar(state.targetColor, variance); } 
+                        while (options.includes(wrong) || wrong === state.targetColor);
+                        options.push(wrong);
+                    }
+                }
+
+                displays.optionsGrid.innerHTML = '';
+                options.forEach(col => {
+                    const card = document.createElement('div');
+                    card.className = 'option-card';
+                    card.style.backgroundColor = col;
+                    card.onclick = () => handleChoice(col);
+                    displays.optionsGrid.appendChild(card);
+                });
+
+                startTimer();
+            }
+
+            function handleChoice(chosenColor) {
+                if (!state.isGameActive) return;
+                state.isGameActive = false;
+                clearInterval(state.timerInterval);
+
+                if (chosenColor === state.targetColor) {
+                    let pts = 10 + (state.level * 2);
+                    state.score += pts;
+                    state.level++;
+                    updateStats();
+                    showToast(`رائع! +${pts} نقطة`, 'success');
+                    setTimeout(nextRound, 500);
+                } else {
+                    state.lives--;
+                    updateStats();
+                    showToast('خطأ!', 'danger');
+                    if (state.lives <= 0) {
+                        setTimeout(endGame, 600);
+                    } else {
+                        setTimeout(nextRound, 600);
+                    }
+                }
+            }
+
+            function startTimer() {
+                state.timeLeft = 100;
+                let dec = (state.step / state.maxTime) * 100;
+
+                state.timerInterval = setInterval(() => {
+                    state.timeLeft -= dec;
+                    displays.timerBar.style.width = `${state.timeLeft}%`;
+
+                    if (state.timeLeft <= 0) {
+                        clearInterval(state.timerInterval);
+                        if (state.isGameActive) {
+                            state.isGameActive = false;
+                            state.lives--;
+                            updateStats();
+                            showToast('انتهى الوقت!', 'danger');
+                            if (state.lives <= 0) {
+                                setTimeout(endGame, 600);
+                            } else {
+                                setTimeout(nextRound, 600);
+                            }
+                        }
+                    }
+                }, state.step);
+            }
+
+            function endGame() {
+                clearInterval(state.timerInterval);
+                displays.finalScore.textContent = state.score;
+                switchScreen('gameOver');
+            }
+
+            buttons.start.onclick = initGame;
+            buttons.restart.onclick = initGame;
+        });
+    </script>
 </body>
 </html>
