@@ -3,241 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MW3 // ULTIMATE COMBAT ZONE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <title>MW3 // MINI-OPS</title>
     <style>
-        :root {
-            --bg-dark: #07090e;
-            --panel: #111827;
-            --accent-red: #ea580c;
-            --accent-blue: #38bdf8;
-            --text-main: #f8fafc;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-dark); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-
-        .game-container {
-            width: 100%; max-width: 480px; height: 100vh; max-height: 750px;
-            background: var(--panel); border: 2px solid #1e293b; border-radius: 12px;
-            display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 40px rgba(0,0,0,0.8);
-            position: relative;
-        }
-
-        /* شريط المعلومات العلوي */
-        .hud-bar {
-            background: #030712; padding: 12px 20px; display: flex; justify-content: space-between;
-            align-items: center; border-bottom: 2px solid var(--accent-red); font-size: 1.1rem; font-weight: 700;
-        }
-        .hud-item span { color: var(--accent-blue); }
-
-        /* ساحة القتال */
-        #battlefield {
-            flex: 1; background: radial-gradient(circle, #0f172a 0%, #030712 100%);
-            position: relative; overflow: hidden; cursor: crosshair;
-        }
-
-        /* الشخصية (اللاعب) */
-        #player {
-            width: 40px; height: 40px; background: var(--accent-blue);
-            position: absolute; bottom: 20px; left: calc(50% - 20px);
-            border-radius: 6px; box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-            display: flex; justify-content: center; align-items: center; font-weight: bold; color: #030712;
-        }
-        #player::after { content: ''; position: absolute; top: -8px; width: 6px; height: 10px; background: #fff; border-radius: 2px; }
-
+        :root { --bg: #030712; --mw-red: #ea580c; --mw-blue: #38bdf8; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
+        
+        #game-view { flex: 1; position: relative; background: radial-gradient(circle, #1e293b, #030712); cursor: crosshair; }
+        
+        /* الشخصية */
+        #operator { width: 40px; height: 40px; background: var(--mw-blue); position: absolute; bottom: 20px; left: 50%; border-radius: 4px; z-index: 2; border: 2px solid white; }
+        
         /* الأعداء */
-        .enemy {
-            width: 35px; height: 35px; background: var(--accent-red);
-            position: absolute; top: -50px; border-radius: 50%;
-            box-shadow: 0 0 10px rgba(234, 88, 12, 0.6);
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        /* الرصاص */
-        .bullet {
-            width: 4px; height: 14px; background: #fbbf24;
-            position: absolute; border-radius: 2px;
-            box-shadow: 0 0 8px #fbbf24;
-        }
-
-        /* أزرار التحكم السفلى */
-        .control-panel {
-            background: #030712; padding: 15px; display: grid; grid-template-columns: 1fr 1.2fr 1fr;
-            gap: 12px; border-top: 1px solid #1e293b;
-        }
-
-        .btn-ctrl {
-            background: #1e293b; color: white; border: none; padding: 16px 0;
-            font-size: 1.2rem; font-weight: bold; border-radius: 8px; cursor: pointer;
-            transition: 0.1s;
-        }
-        .btn-ctrl:active { transform: scale(0.95); background: #334155; }
-        .btn-fire { background: linear-gradient(135deg, #ea580c, #c2410c); font-size: 1.3rem; letter-spacing: 1px; }
-
-        /* شاشة النهاية */
-        #game-over-screen {
-            position: absolute; inset: 0; background: rgba(3, 7, 18, 0.95);
-            display: none; flex-direction: column; justify-content: center; align-items: center; gap: 20px; z-index: 10;
-        }
-        #game-over-screen h1 { color: var(--accent-red); font-size: 2.5rem; letter-spacing: 2px; }
-        .restart-btn { background: var(--accent-red); color: white; border: none; padding: 12px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .enemy { width: 35px; height: 35px; background: var(--mw-red); position: absolute; border-radius: 50%; z-index: 1; transition: top 0.1s linear; }
+        
+        /* الواجهة (HUD) */
+        .hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; padding: 10px; background: rgba(0,0,0,0.5); border-left: 4px solid var(--mw-red); }
+        
+        /* الكنترول */
+        .controls { height: 120px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 10px; background: #111827; }
+        button { background: #1e293b; color: white; border: none; font-size: 1.2rem; border-radius: 8px; }
+        .fire { background: var(--mw-red); font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
-    <div class="game-container">
-        <!-- شريط الحالة -->
-        <div class="hud-bar">
-            <div class="hud-item">النقاط: <span id="score-val">0</span></div>
-            <div class="hud-item">الصحة: <span id="health-val" style="color: #ef4444;">❤️❤️❤️</span></div>
-        </div>
-
-        <!-- الماب (ساحة القتال) -->
-        <div id="battlefield">
-            <div id="player"></div>
-        </div>
-
-        <!-- أزرار التحكم السريعة -->
-        <div class="control-panel">
-            <button class="btn-ctrl" ontouchstart="startMoving(-1)" onmousedown="startMoving(-1)" ontouchend="stopMoving()" onmouseup="stopMoving()">◀ يسار</button>
-            <button class="btn-ctrl btn-fire" onclick="shootBullet()">🔥 إطلاق نار</button>
-            <button class="btn-ctrl" ontouchstart="startMoving(1)" onmousedown="startMoving(1)" ontouchend="stopMoving()" onmouseup="stopMoving()">يمين ▶</button>
-        </div>
-
-        <!-- شاشة الهزيمة -->
-        <div id="game-over-screen">
-            <h1>انتهت المهمة (KIA)</h1>
-            <p>النتيجة النهائية: <span id="final-score" style="color:var(--accent-blue); font-size:1.5rem;">0</span></p>
-            <button class="restart-btn" onclick="resetGame()">إعادة النشر</button>
-        </div>
+<div id="game-view">
+    <div class="hud">
+        <span>SCORE: <span id="score">0</span></span>
+        <span>MW3-MINI-OPS</span>
     </div>
+    <div id="operator"></div>
+</div>
 
-    <script>
-        const battlefield = document.getElementById('battlefield');
-        const player = document.getElementById('player');
-        const scoreVal = document.getElementById('score-val');
-        const healthVal = document.getElementById('health-val');
-        const gameOverScreen = document.getElementById('game-over-screen');
-        const finalScore = document.getElementById('final-score');
+<div class="controls">
+    <button onpointerdown="move(-20)">◀</button>
+    <button class="fire" onpointerdown="shoot()">FIRE</button>
+    <button onpointerdown="move(20)">▶</button>
+</div>
 
-        let score = 0;
-        let health = 3;
-        let playerX = battlefield.clientWidth ? battlefield.clientWidth / 2 - 20 : 200;
-        let moveDirection = 0;
-        let gameInterval, enemyInterval;
-        let isPlaying = true;
+<script>
+    let pos = window.innerWidth / 2;
+    const operator = document.getElementById('operator');
+    const view = document.getElementById('game-view');
+    let score = 0;
 
-        // تحديث مكان اللاعب بسلاسة
-        function updatePlayerPosition() {
-            if (!isPlaying) return;
-            if (moveDirection !== 0) {
-                const maxW = battlefield.clientWidth - 40;
-                playerX = Math.max(0, Math.min(maxW, playerX + moveDirection * 7));
-                player.style.left = playerX + 'px';
-            }
-            requestAnimationFrame(updatePlayerPosition);
-        }
-        requestAnimationFrame(updatePlayerPosition);
+    function move(d) { pos += d; operator.style.left = pos + 'px'; }
 
-        function startMoving(dir) { moveDirection = dir; }
-        function stopMoving() { moveDirection = 0; }
-
-        // إطلاق الرصاص
-        function shootBullet() {
-            if (!isPlaying) return;
-            const bullet = document.createElement('div');
-            bullet.className = 'bullet';
-            bullet.style.left = (playerX + 18) + 'px';
-            bullet.style.bottom = '60px';
-            battlefield.appendChild(bullet);
-
-            let bulletTimer = setInterval(() => {
-                let currentBottom = parseInt(bullet.style.bottom);
-                if (currentBottom > battlefield.clientHeight) {
-                    bullet.remove();
-                    clearInterval(bulletTimer);
-                } else {
-                    bullet.style.bottom = (currentBottom + 15) + 'px';
-
-                    // فحص الاصطدام مع الأعداء
-                    const enemies = document.querySelectorAll('.enemy');
-                    enemies.forEach(enemy => {
-                        const eRect = enemy.getBoundingClientRect();
-                        const bRect = bullet.getBoundingClientRect();
-
-                        if (bRect.left < eRect.right && bRect.right > eRect.left &&
-                            bRect.top < eRect.bottom && bRect.bottom > eRect.top) {
-                            enemy.remove();
-                            bullet.remove();
-                            clearInterval(bulletTimer);
-                            score += 100;
-                            scoreVal.textContent = score;
-                        }
-                    });
-                }
-            }, 20);
-        }
-
-        // ظهور الأعداء ونزولهم باتجاه اللاعب
-        function spawnEnemies() {
-            if (!isPlaying) return;
-            const enemy = document.createElement('div');
-            enemy.className = 'enemy';
-            const maxW = battlefield.clientWidth - 35;
-            let enemyX = Math.random() * maxW;
-            enemy.style.left = enemyX + 'px';
-            enemy.style.top = '0px';
-            battlefield.appendChild(enemy);
-
-            let enemyTop = 0;
-            let enemyTimer = setInterval(() => {
-                if (!isPlaying) {
-                    clearInterval(enemyTimer);
-                    return;
-                }
-                enemyTop += 3; // سرعة نزول العدو
-                enemy.style.top = enemyTop + 'px';
-
-                // إذا وصل العدو لأسفل الشاشة (اخترق الدفاع)
-                if (enemyTop > battlefield.clientHeight - 70) {
-                    enemy.remove();
-                    clearInterval(enemyTimer);
-                    health--;
-                    healthVal.textContent = '❤️'.repeat(health);
-                    if (health <= 0) {
-                        endGame();
-                    }
-                }
-            }, 25);
-        }
-
-        function startGame() {
-            score = 0;
-            health = 3;
-            isPlaying = true;
-            scoreVal.textContent = score;
-            healthVal.textContent = '❤️❤️❤️';
-            gameOverScreen.style.display = 'none';
-            document.querySelectorAll('.enemy, .bullet').forEach(el => el.remove());
+    function shoot() {
+        const bullet = document.createElement('div');
+        bullet.style.cssText = `position:absolute; bottom:60px; left:${pos+18}px; width:4px; height:20px; background:yellow;`;
+        view.appendChild(bullet);
+        
+        let bY = 60;
+        let int = setInterval(() => {
+            bY += 20;
+            bullet.style.bottom = bY + 'px';
             
-            clearInterval(enemyInterval);
-            enemyInterval = setInterval(spawnEnemies, 1200);
-        }
+            // إصابة الأعداء
+            document.querySelectorAll('.enemy').forEach(e => {
+                if(Math.abs(e.offsetLeft - bullet.offsetLeft) < 30 && (view.clientHeight - bY) < e.offsetTop + 35) {
+                    e.remove(); bullet.remove(); clearInterval(int);
+                    score += 100; document.getElementById('score').innerText = score;
+                }
+            });
+            if(bY > view.clientHeight) { bullet.remove(); clearInterval(int); }
+        }, 30);
+    }
 
-        function endGame() {
-            isPlaying = false;
-            clearInterval(enemyInterval);
-            finalScore.textContent = score;
-            gameOverScreen.style.display = 'flex';
-        }
-
-        function resetGame() {
-            startGame();
-        }
-
-        // بدء اللعبة تلقائياً
-        startGame();
-    </script>
+    // نظام الأعداء (AI)
+    setInterval(() => {
+        const e = document.createElement('div');
+        e.className = 'enemy';
+        e.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+        e.style.top = '0px';
+        view.appendChild(e);
+        
+        let t = 0;
+        let moveInt = setInterval(() => {
+            t += 3; e.style.top = t + 'px';
+            if(t > view.clientHeight) { e.remove(); clearInterval(moveInt); }
+        }, 30);
+    }, 1000);
+</script>
 </body>
 </html>
