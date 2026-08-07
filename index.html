@@ -2,41 +2,82 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُخمّن الألوان السحري - لعبة تحدي الألوان</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تحدي الألوان الاحترافي - Pro Color Master</title>
     <link rel="stylesheet" href="style.css">
+    <!-- مكتبة خطوط وأيقونات Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="game-container">
-        <header>
-            <h1>مُخمّن الألوان السحري</h1>
-            <p>اختبر سرعة بديهتك وتمييزك للألوان!</p>
+    <div class="app-wrapper">
+        <!-- شريط العنوان العلوي -->
+        <header class="app-header">
+            <div class="logo">
+                <span class="sparkle">✨</span>
+                <h1>مُخمّن الألوان الاحترافي</h1>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="label">النقاط:</span>
+                    <span id="score-val" class="value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="label">المستوى:</span>
+                    <span id="level-val" class="value">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="label">الأرواح:</span>
+                    <span id="lives-val" class="value">❤️❤️❤️</span>
+                </div>
+            </div>
         </header>
 
-        <div class="score-board">
-            <span>النقاط: <span id="score">0</span></span>
-            <div class="timer-container">
-                <div id="timer-bar"></div>
+        <!-- منطقة اللعبة الرئيسية -->
+        <main class="game-arena">
+            <!-- شاشة الترحيب والبداية -->
+            <div id="start-screen" class="screen active">
+                <div class="hero-card">
+                    <h2>اختبر دقة تمييزك البصري!</h2>
+                    <p>قم بمطابقة اللون المستهدف مع الخيارات المتاحة قبل نفاد الوقت. كلما تقدمت في المستويات، زادت دقة الألوان وصعوبة التحدي.</p>
+                    <button id="start-game-btn" class="primary-btn">بدء التحدي الآن</button>
+                </div>
             </div>
-            <span id="timer-text">10</span>
-        </div>
 
-        <div id="main-color-box" class="color-box">
-            <p>اللون المطلوب:</p>
-            <h2 id="main-color-name" style="color: white; text-shadow: 1px 1px 2px black;"></h2>
-        </div>
+            <!-- شاشة اللعب الفعلية -->
+            <div id="play-screen" class="screen">
+                <div class="timer-wrapper">
+                    <div id="timer-bar" class="timer-bar"></div>
+                </div>
 
-        <div class="options-container">
-            <div class="option-box color-box" id="opt-1"></div>
-            <div class="option-box color-box" id="opt-2"></div>
-            <div class="option-box color-box" id="opt-3"></div>
-            <div class="option-box color-box" id="opt-4"></div>
-        </div>
+                <div class="target-container">
+                    <span class="hint-text">طابق هذا اللون:</span>
+                    <div id="target-box" class="target-box">
+                        <span id="target-hex-code">#000000</span>
+                    </div>
+                </div>
 
-        <button id="start-btn">ابدأ التحدي</button>
-        <p id="feedback-message"></p>
+                <div id="options-grid" class="options-grid">
+                    <!-- سيتم توليد المربعات برمجياً عبر الجافاسكريبت -->
+                </div>
+            </div>
 
+            <!-- شاشة نهاية اللعبة -->
+            <div id="game-over-screen" class="screen">
+                <div class="game-over-card">
+                    <h2>انتهت اللعبة! 🎮</h2>
+                    <p>لقد قدمت أداءً رائعاً، ولكن نفدت محاولاتك.</p>
+                    <div class="final-score-box">
+                        <span>النتيجة النهائية:</span>
+                        <h3 id="final-score-val">0</h3>
+                    </div>
+                    <button id="restart-game-btn" class="primary-btn">العب مرة أخرى</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- إشعارات التنبيه السريعة -->
+        <div id="toast-notification" class="toast"></div>
     </div>
 
     <script src="script.js"></script>
