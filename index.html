@@ -2,88 +2,171 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MW3 // MINI-OPS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجري الإلكتروني</title>
     <style>
-        :root { --bg: #030712; --mw-red: #ea580c; --mw-blue: #38bdf8; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
-        
-        #game-view { flex: 1; position: relative; background: radial-gradient(circle, #1e293b, #030712); cursor: crosshair; }
-        
-        /* الشخصية */
-        #operator { width: 40px; height: 40px; background: var(--mw-blue); position: absolute; bottom: 20px; left: 50%; border-radius: 4px; z-index: 2; border: 2px solid white; }
-        
-        /* الأعداء */
-        .enemy { width: 35px; height: 35px; background: var(--mw-red); position: absolute; border-radius: 50%; z-index: 1; transition: top 0.1s linear; }
-        
-        /* الواجهة (HUD) */
-        .hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; padding: 10px; background: rgba(0,0,0,0.5); border-left: 4px solid var(--mw-red); }
-        
-        /* الكنترول */
-        .controls { height: 120px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 10px; background: #111827; }
-        button { background: #1e293b; color: white; border: none; font-size: 1.2rem; border-radius: 8px; }
-        .fire { background: var(--mw-red); font-size: 1.5rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #111;
+        }
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: #ffffff;
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #111;
+        }
+        .hero p {
+            color: #666;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding-bottom: 60px;
+        }
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .product-img {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .product-price {
+            color: #0071e3;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .buy-btn:hover {
+            background: #333;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #ffffff;
+            border-top: 1px solid #eaeaea;
+            color: #777;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-<div id="game-view">
-    <div class="hud">
-        <span>SCORE: <span id="score">0</span></span>
-        <span>MW3-MINI-OPS</span>
-    </div>
-    <div id="operator"></div>
-</div>
+    <header>
+        <div class="logo">متجري الجديد 🚀</div>
+    </header>
 
-<div class="controls">
-    <button onpointerdown="move(-20)">◀</button>
-    <button class="fire" onpointerdown="shoot()">FIRE</button>
-    <button onpointerdown="move(20)">▶</button>
-</div>
+    <section class="hero">
+        <h1>أهلاً بك في واجهتنا الأولى</h1>
+        <p>منتجات مميزة، بتصميم نظيف وسريع على GitHub Pages</p>
+    </section>
 
-<script>
-    let pos = window.innerWidth / 2;
-    const operator = document.getElementById('operator');
-    const view = document.getElementById('game-view');
-    let score = 0;
-
-    function move(d) { pos += d; operator.style.left = pos + 'px'; }
-
-    function shoot() {
-        const bullet = document.createElement('div');
-        bullet.style.cssText = `position:absolute; bottom:60px; left:${pos+18}px; width:4px; height:20px; background:yellow;`;
-        view.appendChild(bullet);
-        
-        let bY = 60;
-        let int = setInterval(() => {
-            bY += 20;
-            bullet.style.bottom = bY + 'px';
+    <div class="container">
+        <div class="products-grid">
             
-            // إصابة الأعداء
-            document.querySelectorAll('.enemy').forEach(e => {
-                if(Math.abs(e.offsetLeft - bullet.offsetLeft) < 30 && (view.clientHeight - bY) < e.offsetTop + 35) {
-                    e.remove(); bullet.remove(); clearInterval(int);
-                    score += 100; document.getElementById('score').innerText = score;
-                }
-            });
-            if(bY > view.clientHeight) { bullet.remove(); clearInterval(int); }
-        }, 30);
-    }
+            <!-- منتج 1 -->
+            <div class="product-card">
+                <div class="product-img">صورة المنتج 1</div>
+                <div class="product-info">
+                    <div class="product-title">اسم المنتج الأول</div>
+                    <div class="product-price">٩٩ ر.س</div>
+                    <!-- حط رابط الواتساب حقك هنا مع رسالة جاهزة -->
+                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20المنتج%20الأول" class="buy-btn" target="_blank">اطلب عبر واتساب</a>
+                </div>
+            </div>
 
-    // نظام الأعداء (AI)
-    setInterval(() => {
-        const e = document.createElement('div');
-        e.className = 'enemy';
-        e.style.left = Math.random() * (window.innerWidth - 40) + 'px';
-        e.style.top = '0px';
-        view.appendChild(e);
-        
-        let t = 0;
-        let moveInt = setInterval(() => {
-            t += 3; e.style.top = t + 'px';
-            if(t > view.clientHeight) { e.remove(); clearInterval(moveInt); }
-        }, 30);
-    }, 1000);
-</script>
+            <!-- منتج 2 -->
+            <div class="product-card">
+                <div class="product-img">صورة المنتج 2</div>
+                <div class="product-info">
+                    <div class="product-title">اسم المنتج الثاني</div>
+                    <div class="product-price">١٤٩ ر.س</div>
+                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20المنتج%20الثاني" class="buy-btn" target="_blank">اطلب عبر واتساب</a>
+                </div>
+            </div>
+
+            <!-- منتج 3 -->
+            <div class="product-card">
+                <div class="product-img">صورة المنتج 3</div>
+                <div class="product-info">
+                    <div class="product-title">اسم المنتج الثالث</div>
+                    <div class="product-price">١٩٩ ر.س</div>
+                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20المنتج%20الثالث" class="buy-btn" target="_blank">اطلب عبر واتساب</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; 2026
+    </footer>
+
 </body>
 </html>
