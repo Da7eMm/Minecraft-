@@ -3,170 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجري الإلكتروني</title>
+    <title>بوتيك عالمي | الفخامة بين يديك</title>
+    
+    <!-- خطوط جوجل الفخمة (Cairo للعربي و Inter للإنجليزي) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
+        /* --- المتغيرات الأساسية للألوان --- */
+        :root {
+            --bg-color: #121212; /* خلفية دارك مود فخمة */
+            --card-bg: #1e1e1e; /* لون خلفية البطاقات */
+            --text-main: #ffffff;
+            --text-muted: #b0b0b0;
+            --accent-gold: #d4af37; /* الذهبي الملكي */
+            --hover-gold: #e5c150;
+            --border-color: #333;
+            --font-heading: 'Cairo', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
+
         body {
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
             line-height: 1.6;
+            overflow-x: hidden;
         }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- الهيدر (الشريط العلوي) --- */
         header {
-            background: #ffffff;
-            padding: 20px 40px;
+            background-color: rgba(18, 18, 18, 0.95); /* شفاف قليلاً */
+            padding: 20px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #eaeaea;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px); /* تأثير ضبابي خلف الهيدر */
         }
+
         .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: #111;
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, var(--accent-gold), #fff);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
         }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .nav-links a { transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-gold); }
+
+        /* --- القسم الرئيسي (Hero Section) --- */
         .hero {
+            height: 70vh; /* يأخذ 70% من ارتفاع الشاشة */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 60px 20px;
-            background: #ffffff;
-            margin-bottom: 30px;
-        }
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-            color: #111;
-        }
-        .hero p {
-            color: #666;
-            font-size: 18px;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
+            background: radial-gradient(circle, #242424 0%, #121212 100%);
             padding: 0 20px;
+            position: relative;
         }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, var(--bg-color), transparent);
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            line-height: 1.1;
+            max-width: 800px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 600px;
+            font-weight: 300;
+        }
+
+        .cta-btn {
+            padding: 15px 40px;
+            background-color: var(--accent-gold);
+            color: #000;
+            font-family: var(--font-heading);
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 50px; /* زر دائري الحواف */
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--hover-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- قسم المنتجات (Grid System) --- */
+        .products-section {
+            padding: 80px 50px;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-gold);
+            margin: 10px auto 0;
+        }
+
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            padding-bottom: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
         .product-card {
-            background: #ffffff;
-            border: 1px solid #eaeaea;
-            border-radius: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.5s cubic-bezier(0.215, 0.610, 0.355, 1), box-shadow 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            animation: fadeIn 0.8s forwards; /* حركة ظهور عند التحميل */
         }
+
+        /* تأخير ظهور كل بطاقة عن الثانية */
+        .product-card:nth-child(1) { animation-delay: 0.2s; }
+        .product-card:nth-child(2) { animation-delay: 0.4s; }
+        .product-card:nth-child(3) { animation-delay: 0.6s; }
+        .product-card:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: #444;
         }
+
+        .product-img-wrapper {
+            width: 100%;
+            height: 350px; /* صور أكبر وأفخم */
+            overflow: hidden;
+            position: relative;
+        }
+
         .product-img {
             width: 100%;
-            height: 200px;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
+            height: 100%;
+            object-fit: cover; /* تغطية الصورة بدون تشويه */
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.05); /* زوم خفيف عند التمرير */
+        }
+
+        /* شريط السعر فوق الصورة */
+        .price-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--accent-gold);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
             font-size: 14px;
+            font-family: var(--font-heading);
+            backdrop-filter: blur(5px);
         }
+
         .product-info {
-            padding: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
+
         .product-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #222;
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
         }
-        .product-price {
-            color: #0071e3;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 15px;
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-grow: 1; /* يأخذ المساحة المتاحة */
         }
-        .buy-btn {
+
+        .card-buy-btn {
             display: block;
             width: 100%;
-            padding: 12px;
-            background: #111;
-            color: #fff;
+            padding: 15px;
+            background-color: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
             text-align: center;
             text-decoration: none;
             border-radius: 8px;
-            font-weight: bold;
-            transition: background 0.2s;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
         }
-        .buy-btn:hover {
-            background: #333;
+
+        .card-buy-btn:hover {
+            background-color: var(--accent-gold);
+            color: #000;
         }
+
+        /* --- الفوتر (ذيول الصفحة) --- */
         footer {
             text-align: center;
-            padding: 30px;
-            background: #ffffff;
-            border-top: 1px solid #eaeaea;
-            color: #777;
+            padding: 60px 50px;
+            background-color: #0a0a0a;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
             font-size: 14px;
+        }
+
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        /* --- التجاوب مع الجوال (Responsive) --- */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; }
+            .nav-links { display: none; } /* إخفاء الروابط في الجوال (يمكن عمل قائمة منسدلة) */
+            .hero h1 { font-size: 36px; }
+            .products-section { padding: 50px 20px; }
+            .product-img-wrapper { height: 250px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- الهيدر الفخم -->
     <header>
-        <div class="logo">متجري الجديد 🚀</div>
+        <div class="logo">Brand</div>
+        <nav class="nav-links">
+            <a href="#">الرئيسية</a>
+            <a href="#">الرجال</a>
+            <a href="#">النساء</a>
+            <a href="#">مجموعات</a>
+            <a href="#">تواصل معنا</a>
+        </nav>
+        <div class="nav-links">
+            <a href="#">🔍</a>
+            <a href="#">🛒 (٠)</a>
+        </div>
     </header>
 
+    <!-- القسم الرئيسي (Hero) -->
     <section class="hero">
-        <h1>أهلاً بك في واجهتنا الأولى</h1>
-        <p>منتجات مميزة، بتصميم نظيف وسريع على GitHub Pages</p>
+        <h1>قمة الأناقة العصرية</h1>
+        <p>اكتشف تشكيلتنا الحصرية المصممة بأعلى معايير الجودة والفخامة العالمية.</p>
+        <a href="#products" class="cta-btn">تسوق الآن</a>
     </section>
 
-    <div class="container">
+    <!-- شبكة المنتجات -->
+    <section id="products" class="products-section">
+        <h2 class="section-title">وصل حديثاً</h2>
+        
         <div class="products-grid">
             
             <!-- منتج 1 -->
             <div class="product-card">
-                <div class="product-img">صورة المنتج 1</div>
+                <div class="product-img-wrapper">
+                    <!-- ضع رابط صورتك الاحترافية هنا -->
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop" alt="ساعة ذكية" class="product-img">
+                    <div class="price-tag">١,٢٩٩ ر.س</div>
+                </div>
                 <div class="product-info">
-                    <div class="product-title">اسم المنتج الأول</div>
-                    <div class="product-price">٩٩ ر.س</div>
-                    <!-- حط رابط الواتساب حقك هنا مع رسالة جاهزة -->
-                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20المنتج%20الأول" class="buy-btn" target="_blank">اطلب عبر واتساب</a>
+                    <h3 class="product-title">ساعة Chronos Pro</h3>
+                    <p class="product-desc">هيكل من التيتانيوم، زجاج ياقوتي، مقاومة للماء حتى عمق ٥٠ متراً.</p>
+                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20ساعة%20Chronos%20Pro" class="card-buy-btn" target="_blank">طلب المنتج</a>
                 </div>
             </div>
 
             <!-- منتج 2 -->
             <div class="product-card">
-                <div class="product-img">صورة المنتج 2</div>
+                <div class="product-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600&auto=format&fit=crop" alt="سماعات رأس" class="product-img">
+                    <div class="price-tag">٨٩٩ ر.س</div>
+                </div>
                 <div class="product-info">
-                    <div class="product-title">اسم المنتج الثاني</div>
-                    <div class="product-price">١٤٩ ر.س</div>
-                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20المنتج%20الثاني" class="buy-btn" target="_blank">اطلب عبر واتساب</a>
+                    <h3 class="product-title">سماعات Aethere</h3>
+                    <p class="product-desc">صوت محيطي غامر، عزل ضوضاء احترافي، بطارية تدوم ٤٠ ساعة.</p>
+                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20سماعات%20Aethere" class="card-buy-btn" target="_blank">طلب المنتج</a>
                 </div>
             </div>
 
             <!-- منتج 3 -->
             <div class="product-card">
-                <div class="product-img">صورة المنتج 3</div>
-                <div class="product-info">
-                    <div class="product-title">اسم المنتج الثالث</div>
-                    <div class="product-price">١٩٩ ر.س</div>
-                    <a href="https://wa.me/966500000000?text=أرغب%20في%20طلب%20المنتج%20الثالث" class="buy-btn" target="_blank">اطلب عبر واتساب</a>
+                <div class="product-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=600&auto=format&fit=crop" alt="حذاء رياضي" class="product-img">
+                    <div class="price-tag">٥٥٠ ر.س</div>
                 </div>
-            </div>
-
-        </div>
-    </div>
-
-    <footer>
-        جميع الحقوق محفوظة &copy; 2026
-    </footer>
-
-</body>
-</html>
+                <div class="product-info">
+                    <h3 class="product-title">حذاء Velocity Runner</h3>
+                    <p class="product-desc">خفيف للغاية، تصميم ديناميكي، راحة قصوى للقدمين أثناء الجري.</p>
+                    <a href="
