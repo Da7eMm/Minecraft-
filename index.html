@@ -2,60 +2,43 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>عيد ميلاد سعيد!</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #1e1e2f, #2d1b4e);
-            font-family: 'Tahoma', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            color: white;
-            text-align: center;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 500px;
-            animation: bounce 2s infinite alternate;
-        }
-        h1 {
-            color: #ffcc00;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-        }
-        p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            color: #e0e0e0;
-        }
-        .cake {
-            font-size: 60px;
-            margin: 20px 0;
-        }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُخمّن الألوان السحري - لعبة تحدي الألوان</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="card">
-        <div class="cake">🎂🎉</div>
-        <h1>كل عام وأنت بألف خير!</h1>
-        <p>إلى أقرب الناس إلى قلبي، أتمنى لك سنة مليئة بالسعادة، النجاح، وتحقيق كل ما تتمناه. عسى أن تكون أيامك كلها أعياد وفرح!</p>
-        <p style="margin-top: 20px; color: #ff7675; font-weight: bold;">عيد ميلاد سعيد 🎈</p>
+    <div class="game-container">
+        <header>
+            <h1>مُخمّن الألوان السحري</h1>
+            <p>اختبر سرعة بديهتك وتمييزك للألوان!</p>
+        </header>
+
+        <div class="score-board">
+            <span>النقاط: <span id="score">0</span></span>
+            <div class="timer-container">
+                <div id="timer-bar"></div>
+            </div>
+            <span id="timer-text">10</span>
+        </div>
+
+        <div id="main-color-box" class="color-box">
+            <p>اللون المطلوب:</p>
+            <h2 id="main-color-name" style="color: white; text-shadow: 1px 1px 2px black;"></h2>
+        </div>
+
+        <div class="options-container">
+            <div class="option-box color-box" id="opt-1"></div>
+            <div class="option-box color-box" id="opt-2"></div>
+            <div class="option-box color-box" id="opt-3"></div>
+            <div class="option-box color-box" id="opt-4"></div>
+        </div>
+
+        <button id="start-btn">ابدأ التحدي</button>
+        <p id="feedback-message"></p>
+
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
