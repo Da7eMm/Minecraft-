@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MW3 // TACTICAL MAP PROTOCOL</title>
+    <title>MW3 // MINI-MAP & WEAPONS LOADOUT</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --mw-bg: #0a0d12;
             --mw-panel: #131822;
-            --mw-red: #ea580c; /* برتقالي/احمر كود */
+            --mw-red: #ea580c;
             --mw-accent: #38bdf8;
             --mw-text: #f1f5f9;
             --mw-muted: #64748b;
@@ -37,16 +37,14 @@
 
         .mw-wrapper {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             background-color: var(--mw-panel);
             border: 2px solid var(--mw-border);
             border-radius: 8px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
             overflow: hidden;
-            position: relative;
         }
 
-        /* شريط عسكري علوي */
         .mw-top-bar {
             background: #07090e;
             padding: 12px 20px;
@@ -58,123 +56,100 @@
 
         .mw-title {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             letter-spacing: 2px;
             color: var(--mw-text);
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        .mw-title span {
-            color: var(--mw-red);
-        }
+        .mw-title span { color: var(--mw-red); }
 
-        .mw-status {
-            font-size: 0.85rem;
-            color: var(--mw-accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* شاشات اللعبة */
         .screen {
             display: none;
-            padding: 25px;
-            min-height: 420px;
+            padding: 20px;
+            min-height: 400px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        .screen.active {
-            display: flex;
-        }
+        .screen.active { display: flex; }
 
-        /* القائمة الرئيسية */
-        .lobby-box {
-            text-align: center;
-            width: 100%;
-        }
-
-        .lobby-box h2 {
-            font-size: 2rem;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .lobby-box p {
-            color: var(--mw-muted);
-            margin-bottom: 30px;
-            font-size: 1rem;
-        }
-
+        /* الأزرار والعناصر */
         .mw-btn {
             background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 14px 30px;
+            font-size: 1.1rem;
             font-weight: 700;
             letter-spacing: 2px;
             cursor: pointer;
             border-radius: 4px;
-            transition: all 0.2s;
             width: 100%;
             box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
             text-transform: uppercase;
+            margin-top: 15px;
         }
 
-        .mw-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        .mw-btn:hover { opacity: 0.9; }
+
+        /* شاشة اختيار الأسلحة (Loadout) */
+        .weapons-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        /* الماب التكتيكي (ساحة المعركة) */
+        .weapon-card {
+            background: #090d16;
+            border: 2px solid var(--mw-border);
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .weapon-card.selected {
+            border-color: var(--mw-red);
+            background: rgba(234, 88, 12, 0.1);
+        }
+
+        .weapon-info h3 { font-size: 1.1rem; letter-spacing: 1px; color: #fff; }
+        .weapon-info p { font-size: 0.8rem; color: var(--mw-muted); }
+
+        /* الماب المصغر داخل المعركة */
         .tactical-hud {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: 15px;
-            font-size: 1rem;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
             font-weight: 700;
-            letter-spacing: 1px;
             background: rgba(0,0,0,0.3);
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 4px;
             border-left: 4px solid var(--mw-red);
         }
 
         .tactical-map-grid {
             width: 100%;
-            height: 240px;
+            height: 220px;
             background: #090d16;
             border: 1px solid var(--mw-border);
             border-radius: 6px;
             position: relative;
             overflow: hidden;
             cursor: crosshair;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* شبكة الرادار الحربية الخلفية */
-        .tactical-map-grid::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background-image: 
-                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
         }
 
         .target-enemy {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: rgba(234, 88, 12, 0.2);
             border: 2px solid var(--mw-red);
             border-radius: 50%;
@@ -183,143 +158,108 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            animation: pulseEnemy 1.5s infinite;
         }
 
         .target-enemy::after {
             content: '';
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: var(--mw-red);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--mw-red);
         }
 
-        @keyframes pulseEnemy {
-            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.4); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(234, 88, 12, 0); }
-            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
-        }
-
-        .mw-instructions {
-            margin-top: 15px;
-            text-align: center;
-            color: var(--mw-muted);
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        /* شاشة النهاية / التقرير التكتيكي */
-        .after-action-report {
-            text-align: center;
-            width: 100%;
-        }
-
-        .after-action-report h2 {
-            font-size: 1.8rem;
-            color: var(--mw-red);
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-
-        .stats-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--mw-border);
-            padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-        }
-
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 1.1rem;
-        }
-
-        .stats-row:last-child {
-            border-bottom: none;
-        }
-
-        .stats-row span:last-child {
-            color: var(--mw-accent);
-            font-weight: 700;
-        }
+        /* تقرير النهاية */
+        .report-box { text-align: center; width: 100%; }
+        .report-box h2 { color: var(--mw-red); font-size: 1.6rem; margin-bottom: 15px; }
+        .stats-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--mw-border); margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
     <div class="mw-wrapper">
-        <!-- شريط الهيدر الحربي -->
         <div class="mw-top-bar">
-            <div class="mw-title">MW3 // <span>TACTICAL MAP</span></div>
-            <div class="mw-status" id="net-status">ONLINE [SECURE]</div>
+            <div class="mw-title">MW3 // <span>TACTICAL LOADOUT</span></div>
         </div>
 
-        <!-- 1. القائمة الرئيسية (Lobby) -->
-        <div id="lobby-screen" class="screen active">
-            <div class="lobby-box">
-                <h2>OPERATION: OVERLOAD</h2>
-                <p>ماب التكتيك السريع - نمط الاشتباك المباشر</p>
-                <button class="mw-btn" id="start-mission-btn">نشر القوات (DEPLOY)</button>
-            </div>
-        </div>
-
-        <!-- 2. ماب الاشتباك التكتيكي (In-Game Map) -->
-        <div id="game-screen" class="screen">
-            <div class="tactical-hud">
-                <span>النقاط: <span id="score-val" style="color:var(--mw-red);">0</span></span>
-                <span>الزمن المتبقي: <span id="timer-val" style="color:var(--mw-accent);">15</span> ثانية</span>
-            </div>
-
-            <div class="tactical-map-grid" id="map-grid">
-                <!-- الأهداف تظهر هنا برمجياً -->
-            </div>
-
-            <div class="mw-instructions">تخلص من الأهداف المعادية بأسرع وقت قبل انتهاء المهلة!</div>
-        </div>
-
-        <!-- 3. تقرير نهاية المهمة (After Action Report) -->
-        <div id="report-screen" class="screen">
-            <div class="after-action-report">
-                <h2>MISSION ACCOMPLISHED</h2>
-                <p>تم إغلاق الخريطة وتأمين القطاع بنجاح.</p>
-                
-                <div class="stats-box">
-                    <div class="stats-row">
-                        <span>الأهداف المُحטרقة:</span>
-                        <span id="final-score">0</span>
-                    </div>
-                    <div class="stats-row">
-                        <span>كفاءة الاشتباك:</span>
-                        <span id="accuracy-val">100%</span>
+        <!-- 1. شاشة اختيار الأسلحة (Gunsmith) -->
+        <div id="loadout-screen" class="screen active">
+            <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--mw-muted);">اختر سلاح الاشتباك الرئيسي:</h3>
+            <div class="weapons-container">
+                <div class="weapon-card selected" onclick="selectWeapon(this, 'MTZ-556 (Assault)')">
+                    <div class="weapon-info">
+                        <h3>MTZ-556</h3>
+                        <p>بندقية هجومية - دقة عالية وسرعة إطلاق متوسطة</p>
                     </div>
                 </div>
+                <div class="weapon-card" onclick="selectWeapon(this, 'WSP Swarm (SMG)')">
+                    <div class="weapon-info">
+                        <h3>WSP Swarm</h3>
+                        <p>رشاش خفيف - سرعة فائقة في الاشتباكات القريبة</p>
+                    </div>
+                </div>
+                <div class="weapon-card" onclick="selectWeapon(this, 'KATT-AMR (Sniper)')">
+                    <div class="weapon-info">
+                        <h3>KATT-AMR</h3>
+                        <p>قنص ثقيل - ضرر مدمر من ضربة واحدة</p>
+                    </div>
+                </div>
+            </div>
+            <button class="mw-btn" onclick="startMission()">تأكيد السلاح والنزول للماب</button>
+        </div>
 
-                <button class="mw-btn" id="redeploy-btn">إعادة النشر (RE-DEPLOY)</button>
+        <!-- 2. شاشة الماب المصغر والاشتباك -->
+        <div id="game-screen" class="screen">
+            <div class="tactical-hud">
+                <span>السلاح: <span id="current-weapon-hud" style="color:var(--mw-accent);">MTZ-556</span></span>
+                <span>النقاط: <span id="score-val" style="color:var(--mw-red);">0</span></span>
+                <span>الوقت: <span id="timer-val">15</span>ث</span>
+            </div>
+
+            <div class="tactical-map-grid" id="map-grid"></div>
+            <p style="text-align: center; color: var(--mw-muted); font-size: 0.85rem; margin-top: 10px;">اضغط على الأهداف للتعامل معها بسلاحك المختار!</p>
+        </div>
+
+        <!-- 3. شاشة التقرير -->
+        <div id="report-screen" class="screen">
+            <div class="report-box">
+                <h2>MISSION REPORT</h2>
+                <div class="stats-row">
+                    <span>السلاح المستخدم:</span>
+                    <span id="report-weapon" style="color: var(--mw-accent);">MTZ-556</span>
+                </div>
+                <div class="stats-row">
+                    <span>الأهداف التي تم القضاء عليها:</span>
+                    <span id="final-score" style="color: var(--mw-red);">0</span>
+                </div>
+                <button class="mw-btn" onclick="resetToLoadout()">تغيير العتاد والعودة</button>
             </div>
         </div>
     </div>
 
     <script>
         const screens = {
-            lobby: document.getElementById('lobby-screen'),
+            loadout: document.getElementById('loadout-screen'),
             game: document.getElementById('game-screen'),
             report: document.getElementById('report-screen')
         };
 
-        const startBtn = document.getElementById('start-mission-btn');
-        const redeployBtn = document.getElementById('redeploy-btn');
+        let selectedWeaponName = 'MTZ-556 (Assault)';
+        let score = 0;
+        let timeLeft = 15;
+        let gameTimer = null;
+
         const mapGrid = document.getElementById('map-grid');
         const scoreVal = document.getElementById('score-val');
         const timerVal = document.getElementById('timer-val');
         const finalScore = document.getElementById('final-score');
+        const currentWeaponHud = document.getElementById('current-weapon-hud');
+        const reportWeapon = document.getElementById('report-weapon');
 
-        let score = 0;
-        let timeLeft = 15;
-        let gameTimer = null;
-        let enemySpawnTimer = null;
+        function selectWeapon(element, weaponName) {
+            document.querySelectorAll('.weapon-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedWeaponName = weaponName;
+        }
 
         function switchScreen(name) {
             Object.keys(screens).forEach(k => {
@@ -332,6 +272,9 @@
             timeLeft = 15;
             scoreVal.textContent = score;
             timerVal.textContent = timeLeft;
+            currentWeaponHud.textContent = selectedWeaponName.split(' ')[0];
+            reportWeapon.textContent = selectedWeaponName;
+            
             switchScreen('game');
             spawnEnemy();
 
@@ -350,19 +293,15 @@
                 const enemy = document.createElement('div');
                 enemy.className = 'target-enemy';
                 
-                // مواقع عشوائية داخل الماب المصغر
-                const maxX = mapGrid.clientWidth - 70;
-                const maxY = mapGrid.clientHeight - 70;
-                const randomX = Math.floor(Math.random() * Math.max(10, maxX));
-                const randomY = Math.floor(Math.random() * Math.max(10, maxY));
-
-                enemy.style.left = randomX + 'px';
-                enemy.style.top = randomY + 'px';
+                const maxX = mapGrid.clientWidth - 60;
+                const maxY = mapGrid.clientHeight - 60;
+                enemy.style.left = Math.floor(Math.random() * Math.max(10, maxX)) + 'px';
+                enemy.style.top = Math.floor(Math.random() * Math.max(10, maxY)) + 'px';
 
                 enemy.onclick = () => {
                     score += 100;
                     scoreVal.textContent = score;
-                    spawnEnemy(); // ظهور هدف جديد فوراً عند القضاء على الحالي
+                    spawnEnemy();
                 };
 
                 mapGrid.appendChild(enemy);
@@ -376,8 +315,9 @@
             switchScreen('report');
         }
 
-        startBtn.onclick = startMission;
-        redeployBtn.onclick = startMission;
+        function resetToLoadout() {
+            switchScreen('loadout');
+        }
     </script>
 </body>
 </html>
